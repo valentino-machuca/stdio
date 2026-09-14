@@ -1,0 +1,183 @@
+$font-primary: 'Montserrat', sans-serif;
+$font-secondary: 'Montserrat Alternates', sans-serif;
+$color-bg-white: #FAFAFA;
+$color-bg-green: #254b41;
+$color-text-dark-green: #254C43;
+$color-text-gray-green: #254C43;
+
+.auth-container {
+  font-family: $font-primary;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: $color-bg-white;
+
+  .header-bkg-section {
+      height: 30%;
+      background-color: $color-text-gray-green;
+
+      .header-section {
+          height: 100%;
+          background-color: $color-bg-white;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          border-bottom-left-radius: 80px;
+          padding-left: 2em;
+          position: relative;
+          z-index: 2;
+
+          .welcome-text {
+            font-family: $font-secondary;
+            font-size: 28px;
+            color: $color-text-gray-green;
+            margin: 0;
+            font-weight: 400;
+            letter-spacing: 3px;
+          }
+
+          .logo-text {
+            font-family: $font-secondary;
+            font-size: 44px;
+            color: $color-text-dark-green;
+            margin: 0;
+            font-weight: 800;
+            letter-spacing: 4px;
+          }
+        }
+  }
+
+  .form-section {
+    flex-grow: 1;
+    background-color: $color-bg-green;
+    height: 70%;
+    padding: 40px 40px 30px 40px;
+    display: flex;
+    flex-direction: column;
+    border-top-right-radius: 80px;
+
+    .form-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      color: $color-bg-white;
+
+      .back-button {
+        color: $color-bg-white;
+        font-size: 24px;
+        cursor: pointer;
+      }
+
+      .auth-title {
+        font-family: $font-secondary;
+        font-size: 16px;
+        letter-spacing: 2px;
+        font-weight: 500;
+        text-transform: uppercase;
+      }
+    }
+
+    .input-group {
+      margin-bottom: 20px;
+
+      .input-label {
+        color: $color-bg-white;
+        font-family: $font-secondary;
+        font-size: 12px;
+        margin-bottom: 5px;
+        display: block;
+        font-weight: 400;
+        letter-spacing: 1px;
+      }
+
+      .custom-input {
+        --background: #ffffff;
+        --color: #333333;
+        --placeholder-color: #cccccc;
+        --placeholder-opacity: 1;
+        --padding-start: 10px;
+        --border-radius: 10px;
+        font-family: $font-primary;
+        font-size: 12px;
+      }
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 30px 0 40px 0;
+
+      .custom-checkbox {
+        --background: #ffffff;
+        --border-color: #ffffff;
+        --checkmark-color: #264a3e;
+        --size: 16px;
+        margin-right: 10px;
+      }
+
+      .checkbox-label {
+        color: $color-bg-white;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+
+    .primary-btn, .google-btn {
+      --background: #ffffff;
+      --color: #254b41;
+      --border-radius: 8px;
+      --box-shadow: none;
+      font-weight: 600;
+      font-size: 14px;
+      font-family: $font-primary;
+      text-transform: none;
+      height: 48px;
+    }
+
+    .primary-btn {
+      margin-bottom: 15px;
+    }
+
+    .google-btn {
+      margin-bottom: 30px;
+
+      .google-logo {
+        font-weight: 600;
+        margin-left: 5px;
+
+        .google-g { color: #4285F4; }
+        .google-o1 { color: #EA4335; }
+        .google-o2 { color: #FBBC05; }
+        .google-g2 { color: #4285F4; }
+        .google-l { color: #34A853; }
+        .google-e { color: #EA4335; }
+      }
+    }
+
+    .login-link-container {
+      text-align: center;
+      padding-bottom: 20px;
+
+      .login-text {
+        color: $color-bg-white;
+        font-size: 12px;
+      }
+
+      .login-link {
+        color: $color-bg-white;
+        font-weight: 400;
+        font-size: 12px;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
