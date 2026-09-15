@@ -27,7 +27,8 @@ const Auth: React.FC = () => {
   const handleSubmit = async () => {
     try {
       setIsLoading(true);
-      const endpoint = isLogin ? 'http://localhost:3000/api/auth/login' : 'http://localhost:3000/api/auth/register';
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stdio.onrender.com/api';
+      const endpoint = isLogin ? `${API_URL}/auth/login` : `${API_URL}/auth/register`;
       const payload = isLogin ? { identifier: email || username, password } : { email, username, password, name: username, is_teacher: isTeacher };
 
       const res = await fetch(endpoint, {

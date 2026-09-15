@@ -12,7 +12,8 @@ const Home: React.FC = () => {
       const token = localStorage.getItem('token');
       if (!token) return;
 
-      await fetch('http://localhost:3000/api/users/location', {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://stdio.onrender.com/api';
+      await fetch(`${API_URL}/users/location`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

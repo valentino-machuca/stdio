@@ -18,6 +18,8 @@ interface MetadataItem {
   name: string;
 }
 
+const API_URL = import.meta.env.VITE_API_URL || 'https://stdio.onrender.com/api';
+
 const CompleteProfile: React.FC = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -39,7 +41,7 @@ const CompleteProfile: React.FC = () => {
     // Fetch institutions and careers from backend
     const fetchMetadata = async () => {
       try {
-        const res = await fetch('http://localhost:3000/api/users/metadata');
+        const res = await fetch(`${API_URL}/users/metadata`);
         if (res.ok) {
           const data = await res.json();
           setInstitutions(data.institutions);
@@ -97,7 +99,7 @@ const CompleteProfile: React.FC = () => {
       formData.append('career_id', careerId);
       formData.append('profile_picture', selectedFile);
 
-      const res = await fetch('http://localhost:3000/api/users/profile', {
+      const res = await fetch(`${API_URL}/users/profile`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`
