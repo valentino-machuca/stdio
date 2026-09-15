@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, Circle, useMap } from 'react-leaflet';
+import { MapContainer, Marker, Circle, useMap, TileLayer } from 'react-leaflet';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -98,7 +98,10 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
       zoomControl={false}
       style={{ height: '100%', width: '100%' }}
     >
-      <MapLibreLayer styleUrl="https://tiles.openfreemap.org/styles/positron" />
+      <TileLayer
+        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
+        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
+      />
       <MapController center={position} />
       <Marker position={position} icon={customUserIcon} />
 
