@@ -80,7 +80,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
           // Fallback to a default location if denied (e.g. city center)
           setPosition([-34.6037, -58.3816]); // Buenos Aires as fallback
         },
-        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+        { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
     } else {
       setPosition([-34.6037, -58.3816]);

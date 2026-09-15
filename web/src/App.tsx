@@ -1,5 +1,5 @@
 import { Navigate, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, setupIonicReact, isPlatform } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Auth from './pages/Auth/Auth';
 
@@ -37,7 +37,11 @@ import Home from './pages/Home/Home';
 import CompleteProfile from './pages/CompleteProfile/CompleteProfile';
 import Guidelines from './pages/Guidelines/Guidelines';
 
-setupIonicReact();
+setupIonicReact({
+  // Desactiva el comportamiento de "scroll assist" que simula el teclado en navegadores web
+  scrollPadding: !isPlatform('desktop'),
+  scrollAssist: !isPlatform('desktop')
+});
 
 const App: React.FC = () => (
   <IonApp>
