@@ -1,70 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { MapContainer, Marker, Circle, useMap, TileLayer } from 'react-leaflet';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import React, { useEffect, useRef, useState } from 'react';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { maplibreGL } from '@maplibre/maplibre-gl-leaflet';
-
-// Fix for default Leaflet marker icons not showing up due to webpack issues
-import iconUrl from 'leaflet/dist/images/marker-icon.png';
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png';
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png';
-
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl,
-  iconUrl,
-  shadowUrl,
-});
-
-const customUserIcon = L.divIcon({
-  className: 'user-marker-icon',
-  html: `
-    <div class="pulse-container">
-      <div class="pulse-ring"></div>
-      <div class="pulse-dot"></div>
-    </div>
-  `,
-  iconSize: [40, 40],
-  iconAnchor: [20, 20]
-});
+import { MapLibre, UserTrackingMode } from '@capawesome/capacitor-maplibre'
 
 interface MapComponentProps {
   onLocationUpdate?: (lat: number, lng: number) => void;
 }
 
-const MapController: React.FC<{ center: [number, number] }> = ({ center }) => {
-  const map = useMap();
-  useEffect(() => {
-    map.setView(center, map.getZoom());
-    // Force Leaflet to recalculate size, which fixes gray map issues in Ionic
-    setTimeout(() => {
-      map.invalidateSize();
-    }, 200);
-  }, [center, map]);
-  return null;
-};
-
-// Custom component to integrate maplibre into react-leaflet
-const MapLibreLayer: React.FC<{ styleUrl: string }> = ({ styleUrl }) => {
-  const map = useMap();
-  useEffect(() => {
-    const glLayer = maplibreGL({
-      style: styleUrl,
-    });
-    glLayer.addTo(map);
-
-    return () => {
-      map.removeLayer(glLayer);
-    };
-  }, [map, styleUrl]);
-  return null;
-};
-
 const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
   const [position, setPosition] = useState<[number, number] | null>(null);
+  const mapInitialized = useRef(false);
 
   useEffect(() => {
-    // Request geolocation
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition(
         (pos) => {
@@ -77,8 +23,7 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
         },
         (err) => {
           console.error("Error getting location:", err);
-          // Fallback to a default location if denied (e.g. city center)
-          setPosition([-34.6037, -58.3816]); // Buenos Aires as fallback
+          setPosition([-34.6037, -58.3816]);
         },
         { enableHighAccuracy: true, timeout: 15000, maximumAge: 0 }
       );
@@ -87,25 +32,53 @@ const MapComponent: React.FC<MapComponentProps> = ({ onLocationUpdate }) => {
     }
   }, []);
 
+  useEffect(() => {
+
+    if (!position || mapInitialized.current) return;
+
+    async function createMap() {
+      await MapLibre.createMap({
+        mapId: 'map',
+        styleUrl: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+        elementId: 'my-map',
+        center: { latitude: -34.6037, longitude: -58.3816 },
+        zoom: 14,
+      });
+
+      mapInitialized.current = true;
+    
+      let status = await MapLibre.checkPermissions();
+      if (status.location === 'prompt') {
+        status = await MapLibre.requestPermissions();
+      }
+
+      if (status.location !== 'granted') {
+        return;
+      }
+
+      await MapLibre.enableUserLocation({
+        mapId: 'map',
+        trackingMode: UserTrackingMode.Follow,
+      });
+
+    }
+
+    createMap();
+
+    return () => {
+      if (mapInitialized.current) {
+        MapLibre.destroyMap({ mapId: 'map' }).catch(console.error);
+        mapInitialized.current = false;
+      }
+    };
+  }, [position]);
+
   if (!position) {
     return <div style={{ display: 'flex', height: '100%', justifyContent: 'center', alignItems: 'center' }}>Obteniendo ubicación...</div>;
   }
 
   return (
-    <MapContainer 
-      center={position} 
-      zoom={15} 
-      zoomControl={false}
-      style={{ height: '100%', width: '100%' }}
-    >
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OSM</a>'
-      />
-      <MapController center={position} />
-      <Marker position={position} icon={customUserIcon} />
-
-    </MapContainer>
+    <div id="my-map" style={{ width: '100%', height: '100%' }}></div>
   );
 };
 

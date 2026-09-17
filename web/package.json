@@ -12,6 +12,7 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@capawesome/capacitor-maplibre": "^0.2.0",
     "@ionic/react": "^9.0.0",
     "@ionic/react-router": "^9.0.0",
     "@maplibre/maplibre-gl-leaflet": "^0.1.4",

@@ -60,22 +60,18 @@ io.on('connection', (socket) => {
 
 const PORT = process.env.PORT || 3000;
 
-// Initialize Server and Database
 const db = require('./models');
 
 const startServer = async () => {
   await connectDB();
   
   try {
-    // Habilitar PostGIS en la base de datos para soportar tipos GEOMETRY
     await db.sequelize.query('CREATE EXTENSION IF NOT EXISTS postgis;');
     console.log('Extensión PostGIS habilitada o ya existente.');
   } catch (error) {
     console.error('Advertencia: No se pudo crear la extensión PostGIS. Si no eres superusuario, instálala manualmente en la DB:', error.message);
   }
 
-  // Ensure models are synchronized with the database (creates tables/columns if missing)
-  // We use alter: true so it adds the PostGIS 'location' column to users/groups safely
   await db.sequelize.sync({ alter: true });
   console.log('Database synchronized.');
 

@@ -32,33 +32,6 @@ const Home: React.FC = () => {
         <div className="map-container">
           <MapComponent onLocationUpdate={handleLocationUpdate} />
         </div>
-
-        {/* Overlay Buttons disabled for now, animated with framer-motion */}
-        <div className="overlay-buttons">
-          <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}>
-            <IonFab vertical="top" horizontal="start" slot="fixed" style={{ marginTop: '40px', marginLeft: '10px' }}>
-              <IonFabButton disabled={true} color="light">
-                <IonIcon icon={menuOutline} />
-              </IonFabButton>
-            </IonFab>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.3 }}>
-            <IonFab vertical="top" horizontal="end" slot="fixed" style={{ marginTop: '40px', marginRight: '10px' }}>
-              <IonFabButton disabled={true} color="light">
-                <IonIcon icon={personOutline} />
-              </IonFabButton>
-            </IonFab>
-          </motion.div>
-
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4 }}>
-            <IonFab vertical="bottom" horizontal="end" slot="fixed" style={{ marginBottom: '40px', marginRight: '10px' }}>
-              <IonFabButton disabled={true} color="primary">
-                <IonIcon icon={compassOutline} />
-              </IonFabButton>
-            </IonFab>
-          </motion.div>
-        </div>
       </IonContent>
     </IonPage>
   );
